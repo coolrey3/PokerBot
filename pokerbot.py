@@ -40,20 +40,19 @@ async def on_message(message):
 
 
     if message.content.find("!equity") !=-1:
-        #print(message.content[7:11])
-        #await message.channel.send("test")
 
         holecards = message.content[8:]
         print(holecards)
         print(cards[0])
 
+    #best method using ranges and poker library
         if Hand("33") in Range('AA-22'):
             print('its here')
         else:
             print("not here")
 
 
-
+    #1 method of finding cards via count
         if cards.count(holecards) > 0:
             print("found em")
         else:
@@ -61,6 +60,7 @@ async def on_message(message):
             print(type(holecards))
             print(type(cards[0]))
 
+    #checks cards in array, will likely use holes variable and search respective array per position
         if holecards in cards:
             await message.channel.send(holecards + ' , All in Boss')
         else:
