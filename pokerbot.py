@@ -1,6 +1,6 @@
 import discord
 from poker import *
-from discord.ext import commands
+#from discord.ext import commands
 
 #bot = commands.Bot(command_prefix='!', case_insensitive=True)
 
@@ -15,9 +15,7 @@ token = read_token()
 client=discord.Client()
 
 
-
-
-#Open Ranges
+#GTO Opening Ranges
 utgOpen = Range('AA-33 AKo-AJo KQo AKs-ATs KQs-KTs QJs-QTs JTs-J9s T9s 98s 87s 76s 65s')
 mpOpen = Range('AA-22 AKs-A7s A5s KQs-KTs QJs-QTs JTs-J9s T9s-T8s 98s-97s 87s-86s 76s-75s 65s 54s AKo-ATo KQo')
 coOpen = Range('AA-22 AKs-A2s KQs-K6s QJs-Q7s JTs-J8s T9s-T8s 98s-97s 87s-86s 76s-75s 65s-64s 54s AKo-ATo KQo-KJo QJo')
@@ -32,7 +30,10 @@ async def on_message(message):
     # we do not want the bot to reply to itself
     if message.author == client.user:
         return
-    if message.author.bot: return
+
+    #Uncomment so bot does not respond to other bots
+    #if message.author.bot:
+        #return
 
     # Bot Commands
 
