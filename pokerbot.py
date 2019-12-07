@@ -1,5 +1,8 @@
 import discord
 from poker import *
+from discord.ext import commands
+
+bot = commands.Bot(command_prefix='!', case_insensitive=True)
 
 
 #Discord
@@ -10,6 +13,9 @@ def read_token():
 
 token = read_token()
 client=discord.Client()
+
+
+
 
 #Open Ranges
 utgOpen = Range('AA-33 AKo-AJo KQo AKs-ATs KQs-KTs QJs-QTs JTs-J9s T9s 98s 87s 76s 65s')
@@ -33,7 +39,7 @@ async def on_message(message):
     if message.content.find("!users") !=-1:
         await message.channel.send(f"""# of users on this server: {guildId.member_count}""")
 
-    if message.content.find("!pb") !=-1 or message.content.find("!pokerbot") !=-1:
+    if message.content.find("!pb" or "!pokerbot") !=-1 #or message.content.find("!pokerbot") !=-1:
         await message.channel.send("Hi i'm pokerbot! I am in early beta so what I am able to do is limited at this time. Refer"
                                    " to the list below for my available commands. \n\n"
                                    "'!open range' : lists NLHE opening ranges \n"
