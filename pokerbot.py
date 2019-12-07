@@ -1,6 +1,5 @@
 import discord
-
-
+from poker import *
 
 def read_token():
     with open("token.txt", "r") as f:
@@ -47,6 +46,14 @@ async def on_message(message):
         holecards = message.content[8:]
         print(holecards)
         print(cards[0])
+
+        if Hand("33") in Range('AA-22'):
+            print('its here')
+        else:
+            print("not here")
+
+
+
         if cards.count(holecards) > 0:
             print("found em")
         else:
