@@ -63,11 +63,20 @@ async def openrange(ctx):
 
 @bot.command()
 async def sb(ctx, cards, stack="100bb"):
-    print(cards)
+    cardsFormatted = str.upper(cards[:2])+cards[2:]
+    position = 'SB'
     if cards in sbOpen:
-        await ctx.send(f'''{cards}  in the SB, GTO says open''')
+        if len(cards) > 3:
+            await ctx.send(f'''Hand: **{Combo(cards)}**  Position: **{position}** , GTO says **__Open__**''')
+        else:
+            await ctx.send(f'''Hand: **{cardsFormatted}**  Position: **{position}** , GTO says **__Open__**''')
     else:
-        await ctx.send(f'''{cards}  in the SB, GTO says Fold it''')
+        if len(cards) > 3:
+            await ctx.send(f'''Hand: **{Combo(cards)}**  Position: **{position}** , GTO says **__Fold it__**''')
+        else:
+            await ctx.send(f'''Hand: **{cardsFormatted}**  Position: **{position}** , GTO says **__Fold it__**''')
+
+
 
     if len(cards) > 3:
         print(cards[1])
@@ -92,9 +101,9 @@ async def sb(ctx, cards, stack="100bb"):
 
         pic = f'''./HoleCards/{cards}.png'''
 
-        # attempts to send images of cards
+# attempts to send images of cards
         # file = discord.File(f'''./HoleCards/{cards}.png''',filename=cards)
-        await (pic)
+        # await (pic)
         # await ctx.send(file)
         # await ctx.send(f''':{card1}: - :{card2}:''')
 
