@@ -1,6 +1,9 @@
 import discord
 from poker import *
 from discord.ext import commands
+from PIL import Image
+
+
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module. There are a number of utility commands being showcased here.'''
@@ -41,12 +44,21 @@ async def users(ctx):
     await ctx.send(f"""# of users on this server: {guildId.member_count}""")
 
 
-@bot.command()
-async def pb(ctx):
-    await ctx.send("Hi i'm pokerbot! I am in early beta so what I am able to do is limited at this time. Refer"
-                   " to the list below for my available commands. \n\n"
-                   "'!open range' : lists NLHE opening ranges \n"
-                   "'!equity' : type command followed by hole cards to return equity;(i.e: !equity A9o) \n")
+@bot.command(aliases=("pokerbot",'pb'))
+async def poker_bot(ctx):
+    embed = discord.Embed(title="PokerBot Help", description='''Hi i'm pokerbot! I am in early beta so what I am able to do is limited at this time.\n\nRefer to the list below for my available commands and keep in mind commands are case insensitive for your convenience!''')
+    embed.add_field(name="!openrange" , value="sends image of GTO recommended open range pre flop")
+    embed.add_field(name="!BTN" , value="type command followed by hole cards to return equity from the Button;(i.e: !equity A9o)")
+    embed.add_field(name="!SB" , value="type command followed by hole cards to return equity from the Small Blind;(i.e: !equity A9o)")
+
+    await ctx.send(content=None,embed=embed)
+    # awa    it
+    ctx.send("Hi i'm pokerbot! I am in early beta so what I am able to do is limited at this time. Refer"
+    #                " to the list below for my available commands. \n\n"
+    #                "'!open range' : lists NLHE opening ranges \n"
+    #                "'!equity' : type command followed by hole cards to return equity;(i.e: !equity A9o) \n")
+
+    # await ctx.send(Combo('7h6d'))
 
 
 @bot.command()
@@ -55,16 +67,45 @@ async def openrange(ctx):
 
 
 @bot.command()
-async def sb(ctx, arg):
-    print(arg)
-    if arg in sbOpen:
-        await ctx.send(arg + ' in the SB, GTO says open')
+async def sb(ctx, cards, stack="100bb"):
+    print(cards)
+    if cards in sbOpen:
+        await ctx.send(f'''{cards}  in the SB, GTO says open''')
     else:
-        await ctx.send(arg + " in the SB, GTO says Fold it")
+        await ctx.send(f'''{cards}  in the SB, GTO says Fold it''')
+
+    if len(cards) > 3:
+        print(cards[1])
+        card1 = cards[:2]
+        card2 = cards[2:4]
+
+        images = [Image.open(x) for x in [f'''./PNG/{card1}.png''', f'''./PNG/{card2}.png''']]
+        widths, heights = zip(*(i.size for i in images))
+
+        total_width = sum(widths)
+        max_height = max(heights)
+
+        new_im = Image.new('RGB', (total_width, max_height))
+
+        x_offset = 0
+
+        for im in images:
+            new_im.paste(im, (x_offset, 0))
+            x_offset += im.size[0]
+
+        new_im.save(f'''./HoleCards/{cards}.png''')
+
+        pic = f'''./HoleCards/{cards}.png'''
+
+        # attempts to send images of cards
+        # file = discord.File(f'''./HoleCards/{cards}.png''',filename=cards)
+        await (pic)
+        # await ctx.send(file)
+        # await ctx.send(f''':{card1}: - :{card2}:''')
 
 
 @bot.command()
-async def utg(ctx, arg):
+async def utg(ctx, arg, stack="100bb"):
     print(arg)
     if arg in utgOpen:
         await ctx.send(arg + ' Under the Gun, GTO says open')
@@ -73,7 +114,7 @@ async def utg(ctx, arg):
 
 
 @bot.command()
-async def mp(ctx, arg):
+async def mp(ctx, arg, stack="100bb"):
     print(arg)
     if arg in mpOpen:
         await ctx.send(arg + ' in MP, GTO says open')
@@ -82,22 +123,31 @@ async def mp(ctx, arg):
 
 
 @bot.command()
-async def co(ctx, arg):
+async def co(ctx, arg, stack="100bb"):
     print(arg)
     if arg in coOpen:
         await ctx.send(arg + ' in the CO, GTO says open')
     else:
         await ctx.send(arg + " in the CO, GTO says Fold it")
 
-
 @bot.command()
-async def btn(ctx, arg):
+async def combo(ctx,arg):
+    print(arg)
+    ctx.send(arg)
+@bot.command()
+async def btn(ctx, arg, stack="100bb"):
     print(arg)
     if arg in buttonOpen:
         await ctx.send(arg + ' on the Button, GTO says open')
 
     else:
         await ctx.send(arg + " on the Button, GTO says Fold it")
+
+
+@bot.command()
+async def range(ctx, cards):
+    print(cards)
+    await ctx.send(Range(cards).to_ascii())
 
 
 bot.run(token)
