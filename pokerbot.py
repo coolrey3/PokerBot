@@ -56,7 +56,6 @@ async def poker_bot(ctx):
     embed.add_field(name="!CO", value="type command followed by hole cards for an open or fold recommendation from the Cut Off;(i.e: !CO 8h6d)")
     embed.add_field(name="!MP", value="type command followed by hole cards for an open or fold recommendation from Middle Position;(i.e: !MP T9s)")
     embed.add_field(name="!UTG", value="type command followed by hole cards for an open or fold recommendation from Under the Gun;(i.e: !UTG AA)")
-
     await ctx.send(content=None, embed=embed)
 
 @bot.command()
@@ -70,12 +69,11 @@ async def sb(ctx, cards, stack="100bb"):
     cardsFormatted = str.upper(cards[:2])+cards[2:]
     position = 'SB'
 
-    print(len(cards))
-
     if len(cards) > 3:
         card1 = cards[:2]
         card2 = cards[2:4]
 
+# checks to see if hole cards already exist in folder
         fp = './HoleCards/'
         if os.path.isfile(f'''{fp}{cards}.png'''):
             print('Hole Cards already exist')
@@ -101,6 +99,7 @@ async def sb(ctx, cards, stack="100bb"):
         file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
         await ctx.send(file=file)
 
+# sends text results
     if cards in sbOpen:
         if len(cards) > 3:
             await ctx.send(f'''Position: **{position}**   \nStack: **{stack}**  \nGTO: **__Open__**''')
