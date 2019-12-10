@@ -61,7 +61,8 @@ async def poker_bot(ctx):
 
 @bot.command()
 async def openrange(ctx):
-    await ctx.send("https://cdn.discordapp.com/attachments/635691657219538945/652081217679917088/opening_ranges.jpg")
+    file = discord.File('openrange.jpg', filename='openrange.jpg')
+    await ctx.send(file=file)
 
 
 @bot.command()
@@ -69,47 +70,47 @@ async def sb(ctx, cards, stack="100bb"):
     cardsFormatted = str.upper(cards[:2])+cards[2:]
     position = 'SB'
 
+    print(len(cards))
+
     if len(cards) > 3:
-        print(cards[1])
         card1 = cards[:2]
         card2 = cards[2:4]
 
-    fp = './HoleCards/'
+        fp = './HoleCards/'
+        if os.path.isfile(f'''{fp}{cards}.png'''):
+            print('Hole Cards already exist')
+        else:
+                images = [Image.open(x) for x in [f'''./4colordeck/{card1}.png''', f'''./4colordeck/{card2}.png''']]
+                widths, heights = zip(*(i.size for i in images))
 
-    if os.path.isfile(f'''{fp}{cards}.png'''):
-        print('Hole Cards already exist')
-    else:
-        images = [Image.open(x) for x in [f'''./4colordeck/{card1}.png''', f'''./4colordeck/{card2}.png''']]
-        widths, heights = zip(*(i.size for i in images))
+                total_width = sum(widths)
+                max_height = max(heights)
 
-        total_width = sum(widths)
-        max_height = max(heights)
+                new_im = Image.new('RGB', (total_width, max_height))
 
-        new_im = Image.new('RGB', (total_width, max_height))
+                x_offset = 0
 
-        x_offset = 0
+                for im in images:
+                    new_im.paste(im, (x_offset, 0))
+                    x_offset += im.size[0]
 
-        for im in images:
-            new_im.paste(im, (x_offset, 0))
-            x_offset += im.size[0]
-
-        new_im.save(f'''./HoleCards/{cards}.png''')
-        print('new image saved in holecards')
+                new_im.save(f'''./HoleCards/{cards}.png''')
+                print('new image saved in holecards')
 
 # sends images of cards
-    file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
-    await ctx.send(file=file)
+        file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
+        await ctx.send(file=file)
 
     if cards in sbOpen:
         if len(cards) > 3:
             await ctx.send(f'''Position: **{position}**   \nStack: **{stack}**  \nGTO: **__Open__**''')
         else:
-            await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Open__**''')
+            await ctx.send(f'''Hand: ** {cardsFormatted} **  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Open__**''')
     else:
         if len(cards) > 3:
             await ctx.send(f'''\nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
         else:
-            await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
+            await ctx.send(f'''Hand: ** {cardsFormatted} **  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
     # Hand: ** {Combo(cards)} **  \n
 
 @bot.command()
