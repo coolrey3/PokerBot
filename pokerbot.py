@@ -22,6 +22,7 @@ token = read_token()
 client = discord.Client()
 guildId = client.get_guild(635691275663704091)
 
+
 # GTO Opening Ranges
 utgOpen = Range('AA-33 AKo-AJo KQo AKs-ATs KQs-KTs QJs-QTs JTs-J9s T9s 98s 87s 76s 65s')
 mpOpen = Range('AA-22 AKs-A7s A5s KQs-KTs QJs-QTs JTs-J9s T9s-T8s 98s-97s 87s-86s 76s-75s 65s 54s AKo-ATo KQo')
@@ -46,13 +47,14 @@ async def users(ctx):
 
 @bot.command(aliases=("pokerbot",'pb'))
 async def poker_bot(ctx):
-    embed = discord.Embed(title="PokerBot Help", description='''Hi i'm pokerbot! I am in early beta so what I am able to do is limited at this time.\n\nRefer to the list below for my available commands and keep in mind commands are case insensitive for your convenience! \n''')
-    embed.add_field(name="!OpenRange", value="sends image of GTO recommended open range pre flop")
-    embed.add_field(name="!BTN", value="type command followed by hole cards for an open or fold reccomendation from the Button;(i.e: !BTN A9o)")
-    embed.add_field(name="!SB", value="type command followed by hole cards for an open or fold reccomendation from the Small Blind;(i.e: !SB JJ)")
-    embed.add_field(name="!CO", value="type command followed by hole cards for an open or fold reccomendation from the Cut Off;(i.e: !CO 8h6d)")
-    embed.add_field(name="!MP", value="type command followed by hole cards for an open or fold reccomendation from Middle Position;(i.e: !MP T9s)")
-    embed.add_field(name="!UTG", value="type command followed by hole cards for an open or fold reccomendation from Under the Gun;(i.e: !UTG AA)")
+    embed = discord.Embed(title="PokerBot Help", description='''Hi i'm pokerbot! I am in early alpha so what I am able to do is limited at this time.\n\nRefer to the list below for my available commands and keep in mind commands are case insensitive for your convenience! \n''')
+    embed.add_field(name="!PokerBot", value="Displays the Poker Bot instructions")
+    embed.add_field(name="!OpenRange", value="Sends image of GTO recommended open range for 6 max NLHE")
+    embed.add_field(name="!BTN", value="type command followed by hole cards for an open or fold recommendation from the Button;(i.e: !BTN A9o)")
+    embed.add_field(name="!SB", value="type command followed by hole cards for an open or fold recommendation from the Small Blind;(i.e: !SB JJ)")
+    embed.add_field(name="!CO", value="type command followed by hole cards for an open or fold recommendation from the Cut Off;(i.e: !CO 8h6d)")
+    embed.add_field(name="!MP", value="type command followed by hole cards for an open or fold recommendation from Middle Position;(i.e: !MP T9s)")
+    embed.add_field(name="!UTG", value="type command followed by hole cards for an open or fold recommendation from Under the Gun;(i.e: !UTG AA)")
 
     await ctx.send(content=None, embed=embed)
 
@@ -67,14 +69,14 @@ async def sb(ctx, cards, stack="100bb"):
     position = 'SB'
     if cards in sbOpen:
         if len(cards) > 3:
-            await ctx.send(f'''Hand: **{Combo(cards)}**  Position: **{position}** , GTO says **__Open__**''')
+            await ctx.send(f'''Hand: **{Combo(cards)}**  \nPosition: **{position}**   \nStack: **{stack}**  \nGTO: **__Open__**''')
         else:
-            await ctx.send(f'''Hand: **{cardsFormatted}**  Position: **{position}** , GTO says **__Open__**''')
+            await ctx.send(f'''Hand: **{cardsFormatted}**  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Open__**''')
     else:
         if len(cards) > 3:
-            await ctx.send(f'''Hand: **{Combo(cards)}**  Position: **{position}** , GTO says **__Fold it__**''')
+            await ctx.send(f'''Hand: **{Combo(cards)}**  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
         else:
-            await ctx.send(f'''Hand: **{cardsFormatted}**  Position: **{position}** , GTO says **__Fold it__**''')
+            await ctx.send(f'''Hand: **{cardsFormatted}**  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
 
 
 
@@ -83,7 +85,7 @@ async def sb(ctx, cards, stack="100bb"):
         card1 = cards[:2]
         card2 = cards[2:4]
 
-        images = [Image.open(x) for x in [f'''./PNG/{card1}.png''', f'''./PNG/{card2}.png''']]
+        images = [Image.open(x) for x in [f'''./4colordeck/{card1}.png''', f'''./4colordeck/{card2}.png''']]
         widths, heights = zip(*(i.size for i in images))
 
         total_width = sum(widths)
@@ -101,11 +103,11 @@ async def sb(ctx, cards, stack="100bb"):
 
         pic = f'''./HoleCards/{cards}.png'''
 
-# attempts to send images of cards
-        # file = discord.File(f'''./HoleCards/{cards}.png''',filename=cards)
-        # await (pic)
-        # await ctx.send(file)
-        # await ctx.send(f''':{card1}: - :{card2}:''')
+
+# sends images of cards
+        file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
+        print(file)
+        await ctx.send(file=file)
 
 
 @bot.command()
