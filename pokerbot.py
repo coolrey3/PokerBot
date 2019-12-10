@@ -1,4 +1,5 @@
 import discord
+import os.path
 from poker import *
 from discord.ext import commands
 from PIL import Image
@@ -67,24 +68,17 @@ async def openrange(ctx):
 async def sb(ctx, cards, stack="100bb"):
     cardsFormatted = str.upper(cards[:2])+cards[2:]
     position = 'SB'
-    if cards in sbOpen:
-        if len(cards) > 3:
-            await ctx.send(f'''Hand: **{Combo(cards)}**  \nPosition: **{position}**   \nStack: **{stack}**  \nGTO: **__Open__**''')
-        else:
-            await ctx.send(f'''Hand: **{cardsFormatted}**  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Open__**''')
-    else:
-        if len(cards) > 3:
-            await ctx.send(f'''Hand: **{Combo(cards)}**  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
-        else:
-            await ctx.send(f'''Hand: **{cardsFormatted}**  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
-
-
 
     if len(cards) > 3:
         print(cards[1])
         card1 = cards[:2]
         card2 = cards[2:4]
 
+    fp = './HoleCards/'
+
+    if os.path.isfile(f'''{fp}{cards}.png'''):
+        print('Hole Cards already exist')
+    else:
         images = [Image.open(x) for x in [f'''./4colordeck/{card1}.png''', f'''./4colordeck/{card2}.png''']]
         widths, heights = zip(*(i.size for i in images))
 
@@ -100,15 +94,23 @@ async def sb(ctx, cards, stack="100bb"):
             x_offset += im.size[0]
 
         new_im.save(f'''./HoleCards/{cards}.png''')
-
-        pic = f'''./HoleCards/{cards}.png'''
-
+        print('new image saved in holecards')
 
 # sends images of cards
-        file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
-        print(file)
-        await ctx.send(file=file)
+    file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
+    await ctx.send(file=file)
 
+    if cards in sbOpen:
+        if len(cards) > 3:
+            await ctx.send(f'''Position: **{position}**   \nStack: **{stack}**  \nGTO: **__Open__**''')
+        else:
+            await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Open__**''')
+    else:
+        if len(cards) > 3:
+            await ctx.send(f'''\nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
+        else:
+            await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
+    # Hand: ** {Combo(cards)} **  \n
 
 @bot.command()
 async def utg(ctx, arg, stack="100bb"):
