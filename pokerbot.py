@@ -1,7 +1,8 @@
 import discord
-import os.path
 from poker import *
 from discord.ext import commands
+# from HoleCardImage import CardImages
+import os.path
 from PIL import Image
 
 
@@ -69,37 +70,46 @@ async def sb(ctx, cards, stack="100bb"):
     cardsFormatted = str.upper(cards[:2])+cards[2:]
     position = 'SB'
 
-    if len(cards) > 3:
-        card1 = cards[:2]
-        card2 = cards[2:4]
+    class CardImages:
 
-# checks to see if hole cards already exist in folder
-        fp = './HoleCards/'
-        if os.path.isfile(f'''{fp}{cards}.png'''):
-            print('Hole Cards already exist')
-        else:
-                images = [Image.open(x) for x in [f'''./4colordeck/{card1}.png''', f'''./4colordeck/{card2}.png''']]
-                widths, heights = zip(*(i.size for i in images))
+         async def cardimage(self):
 
-                total_width = sum(widths)
-                max_height = max(heights)
+            print(cards + ' in class')
+            if len(cards) > 3:
+                card1 = cards[:2]
+                card2 = cards[2:4]
 
-                new_im = Image.new('RGB', (total_width, max_height))
+                # checks to see if hole cards already exist in folder
+                fp = './HoleCards/'
+                if os.path.isfile(f'''{fp}{cards}.png'''):
+                    print('Hole Cards already exist')
+                else:
+                    images = [Image.open(x) for x in [f'''./4colordeck/{card1}.png''', f'''./4colordeck/{card2}.png''']]
+                    widths, heights = zip(*(i.size for i in images))
 
-                x_offset = 0
+                    total_width = sum(widths)
+                    max_height = max(heights)
 
-                for im in images:
-                    new_im.paste(im, (x_offset, 0))
-                    x_offset += im.size[0]
+                    new_im = Image.new('RGB', (total_width, max_height))
 
-                new_im.save(f'''./HoleCards/{cards}.png''')
-                print('new image saved in holecards')
+                    x_offset = 0
 
-# sends images of cards
-        file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
-        await ctx.send(file=file)
+                    for im in images:
+                        new_im.paste(im, (x_offset, 0))
+                        x_offset += im.size[0]
 
-# sends text results
+                    new_im.save(f'''./HoleCards/{cards}.png''')
+                    print('new image saved in holecards')
+
+                # sends images of cards
+                file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
+                await ctx.send(file=file)
+
+                ############################
+
+    await CardImages.cardimage(cards)
+
+    # sends text results
     if cards in sbOpen:
         if len(cards) > 3:
             await ctx.send(f'''Position: **{position}**   \nStack: **{stack}**  \nGTO: **__Open__**''')
@@ -110,7 +120,6 @@ async def sb(ctx, cards, stack="100bb"):
             await ctx.send(f'''\nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
         else:
             await ctx.send(f'''Hand: ** {cardsFormatted} **  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**''')
-    # Hand: ** {Combo(cards)} **  \n
 
 @bot.command()
 async def utg(ctx, arg, stack="100bb"):
