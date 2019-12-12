@@ -3,10 +3,11 @@ from PositionRanges import PositionRange
 class Results:
 
     def GTO(cards,position):
-        gtoOutput =f''' PositionRange.{position}Open'''
-        gt = f'{gtoOutput}'
-        print(gt)
-        if cards in f'''PositionRange.{position}Open''':
+        gt = getattr(PositionRange, f'''{position}Open''')
+        gtoOutput = gt
+
+        print(gtoOutput)
+        if cards in gtoOutput:
             GTOplay = 'Open'
             return GTOplay
         else:
