@@ -1,7 +1,7 @@
 import discord
-from poker import *
+from poker import Range
 from discord.ext import commands
-from HoleCardImage import CardImages
+from HoleCardImage import CardImages, Results
 from PositionRanges import *
 
 cards = ''
@@ -58,103 +58,41 @@ async def openrange(ctx):
 @bot.command()
 async def sb(ctx, cards, stack="100bb"):
     position = 'sb'
-
-# Send Images
-    if len(cards) > 3:
-        await CardImages.cardImage(cards)
-        await ctx.send(file=CardImages.sendImage(cards))
-    else:
-        await ctx.send(f'''Hand: ** {CardImages.Formatted(cards)}**\n''')
-
-# Sends text results
-    if cards in f'''PositionRange.{position}Open''':
-        if len(cards) > 3:
-            await ctx.send(f'''Position: **{str.upper(position)}**   \nStack: **{stack}**  \nGTO: **__Open__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
-        else:
-            await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Open__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
-    else:
-        if len(cards) > 3:
-            await ctx.send(f'''\nPosition: **{str.upper(position)}**  \nStack: **{stack}**  \nGTO: **__Fold__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
-        else:
-            await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__** \n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
+    await CardImages.sendImage(ctx,cards)
+    await Results.run(ctx,cards,position,stack)
 
 
 @bot.command()
 async def utg(ctx, cards, stack="100bb"):
-
-    cardsFormatted = str.upper(cards[:2]) + cards[2:]
     position = 'utg'
-
-    # Send Images
-    if len(cards) > 3:
-        await CardImages.cardImage(cards)
-        await ctx.send(file=CardImages.sendImage(cards))
-    else:
-        await ctx.send(f'''Hand: ** {cardsFormatted}**\n''')
-
-    if cards in f'''PositionRange.{position}Open''':
-        await ctx.send(cards + ' Under the Gun, GTO says open')
-    else:
-        await ctx.send(cardsFormatted + " Under the Gun, GTO says Fold it")
-
+    await CardImages.sendImage(ctx,cards)
+    await Results.run(ctx,cards,position,stack)
 
 @bot.command()
 async def mp(ctx, cards, stack="100bb"):
-    print(cards)
-    cardsFormatted = str.upper(cards[:2]) + cards[2:]
-
-    # Send Images
-    if len(cards) > 3:
-        await CardImages.cardImage(cards)
-        await ctx.send(file=CardImages.sendImage(cards))
-    else:
-        await ctx.send(f'''Hand: ** {cardsFormatted}**\n''')
-
-
-    if cards in PositionRange.mpOpen:
-        await ctx.send(cards + ' in MP, GTO says open')
-    else:
-        await ctx.send(cards + " in MP, GTO says Fold it")
+    position = 'mp'
+    await CardImages.sendImage(ctx,cards)
+    await Results.run(ctx,cards,position,stack)
 
 
 @bot.command()
 async def co(ctx, cards, stack="100bb"):
-    print(cards)
-    cardsFormatted = str.upper(cards[:2]) + cards[2:]
+    position = 'co'
+    await CardImages.sendImage(ctx,cards)
+    await Results.run(ctx,cards,position,stack)
 
-    # Send Images
-    if len(cards) > 3:
-        await CardImages.cardImage(cards)
-        await ctx.send(file=CardImages.sendImage(cards))
-    else:
-        await ctx.send(f'''Hand: ** {cardsFormatted}**\n''')
 
-    if cards in PositionRange.coOpen:
-        await ctx.send(cards + ' in the CO, GTO says open')
-    else:
-        await ctx.send(cards + " in the CO, GTO says Fold it")
+@bot.command()
+async def btn(ctx, cards, stack="100bb"):
+    position = 'btn'
+    await CardImages.sendImage(ctx,cards)
+    await Results.run(ctx,cards,position,stack)
+
 
 @bot.command()
 async def combo(ctx,arg):
     print(arg)
     ctx.send(arg)
-@bot.command()
-async def btn(ctx, cards, stack="100bb"):
-    print(cards)
-    if cards in PositionRange.buttonOpen:
-        await ctx.send(cards + ' on the Button, GTO says open')
-
-    else:
-        await ctx.send(cards + " on the Button, GTO says Fold it")
-
-        cardsFormatted = str.upper(cards[:2]) + cards[2:]
-
-        # Send Images
-        if len(cards) > 3:
-            await CardImages.cardImage(cards)
-            await ctx.send(file=CardImages.sendImage(cards))
-        else:
-            await ctx.send(f'''Hand: ** {cardsFormatted}**\n''')
 
 
 @bot.command()
@@ -162,11 +100,12 @@ async def range(ctx, cards):
     print(cards)
     await ctx.send(Range(cards).to_ascii())
 
+
 @bot.command()
 async def setrange(ctx, position, userrange):
     print(position)
-    if str.lower(position) == 'sb':
-        sbOpen = Range(userrange)
+    # if str.lower(position) == 'sb':
+    # f'''PositionRange.{position}Open''' = Range(userrange)
     await ctx.send(Range(userrange).to_ascii())
 
 

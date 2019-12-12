@@ -12,6 +12,7 @@ class CardImages:
     def Formatted(cards):
         cardsFormatted = str.upper(cards[:2]) + str.lower(cards[2:])
         return cardsFormatted
+
     async def cardImage(cards):
 
         print(cards + ' in class')
@@ -42,5 +43,29 @@ class CardImages:
                 print('new image saved in holecards')
 
 # sends images of cards
-    def sendImage(cards):
-        return discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
+    async def sendImage(ctx,cards):
+        # Send Images
+        if len(cards) > 3:
+            await CardImages.cardImage(cards)
+            file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
+            await ctx.send(file=file)
+        else:
+            await ctx.send(f'''Hand: ** {CardImages.Formatted(cards)}**\n''')
+
+
+# Sends text results
+class Results:
+    async def run(ctx,cards,position,stack):
+        if cards in f'''PositionRange.{position}Open''':
+
+            if len(cards) > 3:
+                await ctx.send(f'''Position: **{str.upper(position)}**   \nStack: **{stack}**  \nGTO: **__Open__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
+            else:
+                await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Open__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
+        else:
+            if len(cards) > 3:
+                await ctx.send(f'''\nPosition: **{str.upper(position)}**  \nStack: **{stack}**  \nGTO: **__Fold__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
+            else:
+                await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__** \n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
+
+
