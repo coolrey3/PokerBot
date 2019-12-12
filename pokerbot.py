@@ -1,7 +1,7 @@
 import discord
-from poker import Range
 from discord.ext import commands
-from HoleCardImage import CardImages, Results
+from HoleCardImage import CardImages
+from Results import Results
 from PositionRanges import *
 
 cards = ''
