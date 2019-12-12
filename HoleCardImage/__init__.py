@@ -9,6 +9,9 @@ fp = './HoleCards/'
 
 class CardImages:
 
+    def Formatted(cards):
+        cardsFormatted = str.upper(cards[:2]) + str.lower(cards[2:])
+        return cardsFormatted
     async def cardImage(cards):
 
         print(cards + ' in class')

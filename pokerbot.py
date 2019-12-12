@@ -3,8 +3,6 @@ from poker import *
 from discord.ext import commands
 from HoleCardImage import CardImages
 from PositionRanges import *
-# import os.path
-# from PIL import Image
 
 cards = ''
 description = '''An example bot to showcase the discord.ext.commands extension
@@ -23,8 +21,6 @@ def read_token():
 token = read_token()
 client = discord.Client()
 guildId = client.get_guild(635691275663704091)
-
-
 
 
 @bot.event
@@ -62,14 +58,13 @@ async def openrange(ctx):
 @bot.command()
 async def sb(ctx, cards, stack="100bb"):
     position = 'sb'
-    cardsFormatted = str.upper(cards[:2])+cards[2:]
 
 # Send Images
     if len(cards) > 3:
         await CardImages.cardImage(cards)
         await ctx.send(file=CardImages.sendImage(cards))
     else:
-        await ctx.send(f'''Hand: ** {cardsFormatted}**\n''')
+        await ctx.send(f'''Hand: ** {CardImages.Formatted(cards)}**\n''')
 
 # Sends text results
     if cards in f'''PositionRange.{position}Open''':
@@ -88,6 +83,7 @@ async def sb(ctx, cards, stack="100bb"):
 async def utg(ctx, cards, stack="100bb"):
 
     cardsFormatted = str.upper(cards[:2]) + cards[2:]
+    position = 'utg'
 
     # Send Images
     if len(cards) > 3:
@@ -96,8 +92,7 @@ async def utg(ctx, cards, stack="100bb"):
     else:
         await ctx.send(f'''Hand: ** {cardsFormatted}**\n''')
 
-
-    if cards in utgOpen:
+    if cards in f'''PositionRange.{position}Open''':
         await ctx.send(cards + ' Under the Gun, GTO says open')
     else:
         await ctx.send(cardsFormatted + " Under the Gun, GTO says Fold it")
@@ -116,7 +111,7 @@ async def mp(ctx, cards, stack="100bb"):
         await ctx.send(f'''Hand: ** {cardsFormatted}**\n''')
 
 
-    if cards in mpOpen:
+    if cards in PositionRange.mpOpen:
         await ctx.send(cards + ' in MP, GTO says open')
     else:
         await ctx.send(cards + " in MP, GTO says Fold it")
@@ -134,7 +129,7 @@ async def co(ctx, cards, stack="100bb"):
     else:
         await ctx.send(f'''Hand: ** {cardsFormatted}**\n''')
 
-    if cards in coOpen:
+    if cards in PositionRange.coOpen:
         await ctx.send(cards + ' in the CO, GTO says open')
     else:
         await ctx.send(cards + " in the CO, GTO says Fold it")
@@ -146,7 +141,7 @@ async def combo(ctx,arg):
 @bot.command()
 async def btn(ctx, cards, stack="100bb"):
     print(cards)
-    if cards in buttonOpen:
+    if cards in PositionRange.buttonOpen:
         await ctx.send(cards + ' on the Button, GTO says open')
 
     else:
