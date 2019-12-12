@@ -67,7 +67,7 @@ async def sb(ctx, cards, stack="100bb"):
     position = 'SB'
 
     await CardImages.cardimage(cards)
-    await ctx.send(file= CardImages.sendimage(cards))
+    await ctx.send(file=CardImages.sendimage(cards))
 ###################################
 
     # sends text results
