@@ -22,6 +22,10 @@ token = read_token()
 client = discord.Client()
 guildId = client.get_guild(635691275663704091)
 
+async def query(ctx,cards,position,stack):
+    await CardImages.sendImage(ctx,cards)
+    await Results.run(ctx,cards,position,stack)
+
 
 @bot.event
 async def on_ready():
@@ -58,35 +62,30 @@ async def openrange(ctx):
 @bot.command()
 async def sb(ctx, cards, stack="100bb"):
     position = 'sb'
-    await CardImages.sendImage(ctx,cards)
-    await Results.run(ctx,cards,position,stack)
+    await query(ctx,cards,position,stack)
 
 
 @bot.command()
 async def utg(ctx, cards, stack="100bb"):
     position = 'utg'
-    await CardImages.sendImage(ctx,cards)
-    await Results.run(ctx,cards,position,stack)
+    await query(ctx,cards,position,stack)
 
 @bot.command()
 async def mp(ctx, cards, stack="100bb"):
     position = 'mp'
-    await CardImages.sendImage(ctx,cards)
-    await Results.run(ctx,cards,position,stack)
+    await query(ctx,cards,position,stack)
 
 
 @bot.command()
 async def co(ctx, cards, stack="100bb"):
     position = 'co'
-    await CardImages.sendImage(ctx,cards)
-    await Results.run(ctx,cards,position,stack)
+    await query(ctx,cards,position,stack)
 
 
 @bot.command()
 async def btn(ctx, cards, stack="100bb"):
     position = 'btn'
-    await CardImages.sendImage(ctx,cards)
-    await Results.run(ctx,cards,position,stack)
+    await query(ctx,cards,position,stack)
 
 
 @bot.command()
