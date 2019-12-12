@@ -64,13 +64,14 @@ async def openrange(ctx):
 @bot.command()
 async def sb(ctx, cards, stack="100bb"):
     cardsFormatted = str.upper(cards[:2])+cards[2:]
-    position = 'SB'
+    position = 'sb'
 
-    await CardImages.cardimage(cards)
-    await ctx.send(file=CardImages.sendimage(cards))
-###################################
+# Send Images
+    if len(cards) > 3:
+        await CardImages.cardImage(cards)
+        await ctx.send(file=CardImages.sendImage(cards))
 
-    # sends text results
+# Sends text results
     if cards in sbOpen:
         if len(cards) > 3:
             await ctx.send(f'''Position: **{position}**   \nStack: **{stack}**  \nGTO: **__Open__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')

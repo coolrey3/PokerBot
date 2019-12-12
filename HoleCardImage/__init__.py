@@ -7,11 +7,9 @@ from discord.ext import commands
 fp = './HoleCards/'
 
 
-#######################
-
 class CardImages:
 
-    async def cardimage(cards):
+    async def cardImage(cards):
 
         print(cards + ' in class')
 
@@ -40,9 +38,6 @@ class CardImages:
                 new_im.save(f'''./HoleCards/{cards}.png''')
                 print('new image saved in holecards')
 
-            # sends images of cards
-
-    def sendimage(cards):
+# sends images of cards
+    def sendImage(cards):
         return discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
-
-############################
