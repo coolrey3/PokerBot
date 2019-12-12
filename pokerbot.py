@@ -70,18 +70,20 @@ async def sb(ctx, cards, stack="100bb"):
     if len(cards) > 3:
         await CardImages.cardImage(cards)
         await ctx.send(file=CardImages.sendImage(cards))
+    else:
+        await ctx.send(f'''Hand: ** {cardsFormatted}**\n''')
 
 # Sends text results
     if cards in sbOpen:
         if len(cards) > 3:
-            await ctx.send(f'''Position: **{position}**   \nStack: **{stack}**  \nGTO: **__Open__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
+            await ctx.send(f'''Position: **{str.upper(position)}**   \nStack: **{stack}**  \nGTO: **__Open__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
         else:
-            await ctx.send(f'''Hand: ** {cardsFormatted} **  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Open__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
+            await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Open__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
     else:
         if len(cards) > 3:
-            await ctx.send(f'''\nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
+            await ctx.send(f'''\nPosition: **{str.upper(position)}**  \nStack: **{stack}**  \nGTO: **__Fold__**\n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
         else:
-            await ctx.send(f'''Hand: ** {cardsFormatted} **  \nPosition: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__** \n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
+            await ctx.send(f'''Position: **{position}**  \nStack: **{stack}**  \nGTO: **__Fold__** \n\n **__Raise First-In__**\n\n **__Call VS__**\n\n **__3-Bet VS__**\n\n **__Squeeze VS__**''')
 
 @bot.command()
 async def utg(ctx, arg, stack="100bb"):
