@@ -1,4 +1,0 @@
-poker
-discord.ext
-discord
-PIL
