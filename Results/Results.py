@@ -3,7 +3,7 @@ from PositionRanges import PositionRange
 class Results:
 
     def GTO(cards,position):
-        gt = getattr(PositionRange, f'''{position}Open''')
+        gt = getattr(PositionRange.PositionRange, f'''{position}Open''')
         gtoOutput = gt
 
         # print(gtoOutput)
@@ -16,14 +16,13 @@ class Results:
 
     def RaiseFirst(cards,position):
 
-        ri = getattr(PositionRange, f'''{position}RaiseIn''')
+        ri = getattr(PositionRange.PositionRange, f'''{position}RaiseIn''')
         raiseIn = ri
 
         if cards in raiseIn:
             return 'Card in Raise in'
         else:
             return 'not in list'
-
 
     async def run(ctx,cards,position,stack):
 

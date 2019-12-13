@@ -2,8 +2,9 @@ import discord
 from discord.ext import commands
 from HoleCardImage import CardImages
 from Results import Results
-from PositionRanges import *
+from PositionRanges import PositionRange
 from poker import Combo
+
 
 cards = ''
 description = '''An example bot to showcase the discord.ext.commands extension
@@ -24,8 +25,8 @@ client = discord.Client()
 guildId = client.get_guild(635691275663704091)
 
 async def query(ctx,cards,position,stack):
-    await CardImages.sendImage(ctx,cards)
-    await Results.run(ctx,cards,position,stack)
+    await CardImages.CardImages.sendImage(ctx,cards)
+    await Results.Results.run(ctx,cards,position,stack)
 
 
 @bot.event
