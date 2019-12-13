@@ -3,6 +3,7 @@ from discord.ext import commands
 from HoleCardImage import CardImages
 from Results import Results
 from PositionRanges import *
+from poker import Combo
 
 cards = ''
 description = '''An example bot to showcase the discord.ext.commands extension
@@ -91,7 +92,7 @@ async def btn(ctx, cards, stack="100bb"):
 @bot.command()
 async def combo(ctx,arg):
     print(arg)
-    ctx.send(arg)
+    await ctx.send(Combo(arg))
 
 
 @bot.command()
@@ -107,5 +108,8 @@ async def setrange(ctx, position, userrange):
     # f'''PositionRange.{position}Open''' = Range(userrange)
     await ctx.send(Range(userrange).to_ascii())
 
+@bot.command()
+async def equity(ctx,cards):
+    await ctx.send(cards + 'Equity:')
 
 bot.run(token)
