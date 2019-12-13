@@ -1,7 +1,8 @@
 from poker import Range
 
-# GTO Opening Ranges
 class PositionRange:
+
+    # GTO Opening Ranges
     sbOpen = Range(
         'AA-22 AKs-A2s KQs-K2s QJs-Q4s JTs-J7s T9s-T7s 98s-97s 87s-86s 76s-75s 65s-64s 54s AKo-A7o KQo-K9o QJo-Q9o JTo-J9o T9o 98o')
 
@@ -15,6 +16,8 @@ class PositionRange:
     buttonOpen = Range(
         'AA-22 AKs-A2s KQs-K2s QJs-Q2s JTs-J5s T9s-T6s 98s-96s 87s-85s 76s-74s 65s-64s 54s-53s 43s AKo-A2o KQo-K7o QJo-Q9o JTo-J9o T9o-T8o 98o 87o')
 
+
+    # Raisein ranges
     sbRaiseIn = Range('AA')
     utgRaiseIn = Range('AA 88')
     mpRaiseIn = Range('AA')
