@@ -14,6 +14,11 @@ class Results:
             GTOplay = 'Fold'
             return GTOplay
 
+    def RaiseFirst(cards,position):
+
+        if cards in
+
+        print('first')
 
 
     async def run(ctx,cards,position,stack):
