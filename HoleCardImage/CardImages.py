@@ -20,9 +20,11 @@ class CardImages:
         if len(cards) > 3:
             card1 = cards[:2]
             card2 = cards[2:4]
+            formattedcards = str.upper(cards[:1])+cards[1:2]+str.upper(cards[2:3])+cards[3:]
+            print(formattedcards)
 
             # checks to see if hole cards already exist in folder
-            if os.path.isfile(f'''{fp}{cards}.png'''):
+            if os.path.isfile(f'''{fp}{formattedcards}.png'''):
                 print('Hole Cards already exist')
             else:
                 images = [Image.open(x) for x in [f'''./4colordeck/{card1}.png''', f'''./4colordeck/{card2}.png''']]
