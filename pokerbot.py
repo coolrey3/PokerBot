@@ -3,8 +3,7 @@ from discord.ext import commands
 from HoleCardImage import CardImages
 from Results import Results
 from PositionRanges import PositionRange
-from poker import Combo
-
+from poker import Combo, Range
 
 cards = ''
 description = '''An example bot to showcase the discord.ext.commands extension
