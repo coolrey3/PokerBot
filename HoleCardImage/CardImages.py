@@ -18,8 +18,8 @@ class CardImages:
         print(cards + ' in class')
 
         if len(cards) > 3:
-            card1 = cards[:2]
-            card2 = cards[2:4]
+            card1 = str.upper(cards[0])+str.lower(cards[1])
+            card2 = str.upper(cards[2])+str.lower(cards[3])
             formattedcards = str.upper(cards[:1])+cards[1:2]+str.upper(cards[2:3])+cards[3:]
             print(formattedcards)
 
@@ -41,15 +41,16 @@ class CardImages:
                     new_im.paste(im, (x_offset, 0))
                     x_offset += im.size[0]
 
-                new_im.save(f'''./HoleCards/{cards}.png''')
+                new_im.save(f'''./HoleCards/{formattedcards}.png''')
                 print('new image saved in holecards')
 
 # sends images of cards
     async def sendImage(ctx,cards):
         # Send Images
         if len(cards) > 3:
+            formattedcards = str.upper(cards[:1])+cards[1:2]+str.upper(cards[2:3])+cards[3:]
             await CardImages.cardImage(cards)
-            file = discord.File(f'''./HoleCards/{cards}.png''', filename=f'''./HoleCards/{cards}.png''')
+            file = discord.File(f'''./HoleCards/{formattedcards}.png''', filename=f'''./HoleCards/{formattedcards}.png''')
             await ctx.send(file=file)
         else:
             await ctx.send(f'''Hand: ** {CardImages.Formatted(cards)}**\n''')
