@@ -63,7 +63,7 @@ async def openrange(ctx, position=''):
         posOpen = getattr(PositionRange.PositionRange, f'''{position}Open''')
         print(posOpen)
 
-        await ctx.send(Range(str(posOpen)).to_ascii())
+        await ctx.send('```' + Range(str(posOpen)).to_ascii() + '```')
     else:
         await ctx.send(file=file)
 
@@ -106,7 +106,7 @@ async def combo(ctx,arg):
 @bot.command()
 async def range(ctx, cards):
     print(cards)
-    await ctx.send(Range(cards).to_ascii())
+    await ctx.send('```'+Range(cards).to_ascii()+'```')
 
 
 @bot.command()
@@ -114,7 +114,7 @@ async def setrange(ctx, position, userrange):
     print(position)
     # if str.lower(position) == 'sb':
     # f'''PositionRange.{position}Open''' = Range(userrange)
-    await ctx.send(Range(userrange).to_ascii())
+    await ctx.send('```'+Range(userrange).to_ascii()+'```')
 
 @bot.command()
 async def equity(ctx,cards):
