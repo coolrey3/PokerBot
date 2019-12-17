@@ -55,9 +55,17 @@ async def poker_bot(ctx):
 
 
 @bot.command()
-async def openrange(ctx):
+async def openrange(ctx, position=''):
     file = discord.File('openrange.jpg', filename='openrange.jpg')
-    await ctx.send(file=file)
+
+
+    if position != '':
+        posOpen = getattr(PositionRange.PositionRange, f'''{position}Open''')
+        print(posOpen)
+
+        await ctx.send(Range(str(posOpen)).to_ascii())
+    else:
+        await ctx.send(file=file)
 
 
 @bot.command()
